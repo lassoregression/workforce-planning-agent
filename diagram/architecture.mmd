@@ -1,0 +1,60 @@
+%% Architecture diagram for workforce-planner
+%% Top-to-bottom dataflow. Solid = real. Dashed = optional (LLM) or future (SAP).
+%% A single subgraph holds the engine; no nested subgraphs.
+
+flowchart TB
+
+    %% --- Inputs (above Band 1) ---
+    INPUTS["Inputs<br/>role · target · year · budget"]
+
+    %% --- Band 1: Data ---
+    %% SAP future-state group (dashed) on the left.
+    SAP_EC["Employee Central (OData v2)<br/>who and where<br/>User / EmpJob: userId, jobTitle, department, location<br/>EmpJobRelationships: manager"]
+    SAP_JP["Job Profile / Talent Intelligence Hub<br/>what the role requires<br/>role attributes: required Skills & Competencies<br/>each with expected proficiency level"]
+    SAP_GP["Growth Portfolio (Talent Intelligence Hub)<br/>what each person has<br/>attribute (Skill): proficiencyLevel (1-5)<br/>rating history: source (manager/course/self/AI-inferred), date"]
+    SAP_NOTE["attrition model<br/>(not native SF)"]
+
+    %% Real mock source (solid).
+    JSON[("workforce_data.json<br/>id, name, job_title, department<br/>manager_id, flight_risk, retirement_eligible<br/>skills[], endorsements[skill, proficiency, source, date]")]
+
+    %% --- Band 2: Engine ---
+    subgraph ENGINE ["engine.py — produces every number"]
+        direction LR
+        TRUST["is_endorsement_trusted<br/>(trust)"]
+        BUCKET["_classify<br/>(bucket)"]
+        GAP["hire_gap math<br/>(gap)"]
+        COST["plan_cost · savings<br/>(cost)"]
+        PLAN["compute_plan<br/>(plan dict)"]
+        TRUST --> BUCKET --> GAP --> COST --> PLAN
+    end
+
+    %% --- Band 3: Presentation ---
+    APP["app.py<br/>Streamlit UI"]
+    LLM["llm_utils.py<br/>prose only, never numbers<br/>(headline · risk · chat)"]
+
+    %% --- Edges (solid = real data flow) ---
+    INPUTS --> ENGINE
+    JSON --> ENGINE
+    ENGINE --> APP
+
+    %% --- Dashed edges (optional / future) ---
+    SAP_EC -. " " .-> SAP_GP
+    SAP_JP -. " " .-> SAP_GP
+    SAP_GP -. "future: replaces load_data()" .-> JSON
+    SAP_NOTE -. " " .-> JSON
+    LLM -. optional prose .-> APP
+
+    %% --- Styles ---
+    classDef data fill:#FAFAF7,stroke:#0A0A0A,stroke-width:1px,color:#0A0A0A;
+    classDef future fill:#FAFAF7,stroke:#6B6B6B,stroke-width:1px,stroke-dasharray:4 3,color:#6B6B6B;
+    classDef llm fill:#FAFAF7,stroke:#6B6B6B,stroke-width:1px,stroke-dasharray:4 3,color:#0A0A0A;
+    classDef ui fill:#FAFAF7,stroke:#0A0A0A,stroke-width:1px,color:#0A0A0A;
+
+    class JSON data
+    class SAP_EC,SAP_JP,SAP_GP,SAP_NOTE future
+    class LLM llm
+    class APP,INPUTS ui
+    class TRUST,BUCKET,GAP,COST,PLAN ui
+
+    %% Single accent color on the engine container only.
+    style ENGINE fill:#ECFDF5,stroke:#15803D,stroke-width:2px,color:#0A0A0A

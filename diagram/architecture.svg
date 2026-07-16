@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1100" font-family="-apple-system,Segoe UI,Inter,system-ui,sans-serif" font-size="13" fill="#0A0A0A">
+
+  <!-- Page background -->
+  <rect width="1240" height="1100" fill="#FAFAF7"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0A0A0A"/>
+    </marker>
+    <marker id="arrowDashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4B4B4B"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="80" y="26" font-size="12" font-family="ui-monospace,Consolas,monospace" fill="#0A0A0A" letter-spacing="2" font-weight="600">WORKFORCE PLANNING AGENT — ARCHITECTURE</text>
+
+  <!-- Band labels (left margin, BLACK and slightly larger) -->
+  <g font-size="12" font-family="ui-monospace,Consolas,monospace" fill="#0A0A0A" letter-spacing="1.5" font-weight="600">
+    <text x="20" y="138">DATA</text>
+    <text x="20" y="144" font-size="9" fill="#4B4B4B" font-weight="500">SOURCES</text>
+
+    <text x="20" y="320">INPUTS</text>
+    <text x="20" y="335" font-size="9" fill="#4B4B4B" font-weight="500">+ DATA</text>
+
+    <text x="20" y="650">ENGINE</text>
+
+    <text x="20" y="880">RESULT</text>
+
+    <text x="20" y="980">PRESENT-</text>
+    <text x="20" y="996">ATION</text>
+  </g>
+
+  <!-- =============================================================
+       BAND 1 — DATA SOURCES (SAP, future-state, horizontal strip)
+       y 60..200, three entities side-by-side inside a dashed wrapper.
+       ============================================================= -->
+
+  <!-- Wrapper (light dashed, encloses the three entities) -->
+  <rect x="80" y="60" width="1080" height="160" rx="4" fill="none"
+        stroke="#9A9A95" stroke-width="1" stroke-dasharray="2 4"/>
+  <text x="92" y="54" font-size="10" font-family="ui-monospace,Consolas,monospace" fill="#4B4B4B" letter-spacing="1.5" font-weight="600">SAP FUTURE-STATE</text>
+
+  <!-- Three SAP entities, equal width, horizontally aligned. -->
+  <!-- Each entity: 340 wide, 130 tall. 3*340 + 2*16 (gap) = 1052. Wrapper inner = 1080-32=1048. Pad (1048-1052)= -4 — close to 0; tighten. -->
+  <!-- Use 336 each, gap 18: 3*336 + 2*18 = 1044. Pad (1080-1044)/2 = 18. Start x=80+18=98. -->
+
+  <!-- SAP entity 1: Employee Central -->
+  <g>
+    <rect x="98" y="78" width="336" height="124" rx="2" fill="#FAFAF7" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <rect x="98" y="78" width="336" height="24" fill="#F1EEE5" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="110" y="95" font-weight="700" font-size="13" fill="#0A0A0A">Employee Central (OData v2)</text>
+    <text x="110" y="120" font-size="12" fill="#4B4B4B" font-style="italic">who and where</text>
+    <text x="110" y="142" font-size="12" fill="#0A0A0A">User / EmpJob ······ userId, jobTitle,</text>
+    <text x="110" y="158" font-size="12" fill="#0A0A0A">department, location</text>
+    <text x="110" y="178" font-size="12" fill="#0A0A0A">EmpJobRelationships ······ manager</text>
+    <text x="110" y="196" font-size="11" fill="#6B6B6B">FODepartment / FOLocation</text>
+  </g>
+
+  <!-- SAP entity 2: Job Profile -->
+  <g>
+    <rect x="452" y="78" width="336" height="124" rx="2" fill="#FAFAF7" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <rect x="452" y="78" width="336" height="24" fill="#F1EEE5" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="464" y="95" font-weight="700" font-size="13" fill="#0A0A0A">Job Profile / Talent Intel. Hub</text>
+    <text x="464" y="120" font-size="12" fill="#4B4B4B" font-style="italic">what the role requires</text>
+    <text x="464" y="142" font-size="12" fill="#0A0A0A">role attributes ······ required Skills</text>
+    <text x="464" y="158" font-size="12" fill="#0A0A0A">&amp; Competencies</text>
+    <text x="464" y="180" font-size="12" fill="#0A0A0A">each with expected proficiency level</text>
+  </g>
+
+  <!-- SAP entity 3: Growth Portfolio -->
+  <g>
+    <rect x="806" y="78" width="336" height="124" rx="2" fill="#FAFAF7" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <rect x="806" y="78" width="336" height="24" fill="#F1EEE5" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="818" y="95" font-weight="700" font-size="13" fill="#0A0A0A">Growth Portfolio (Talent Intel.)</text>
+    <text x="818" y="120" font-size="12" fill="#4B4B4B" font-style="italic">what each person has</text>
+    <text x="818" y="142" font-size="12" fill="#0A0A0A">attribute (Skill) ······ proficiencyLevel</text>
+    <text x="818" y="158" font-size="12" fill="#0A0A0A">(scale 1-5)</text>
+    <text x="818" y="180" font-size="12" fill="#0A0A0A">rating history ······ source, date</text>
+  </g>
+
+  <!-- =============================================================
+       BAND 2 — INPUTS + DATA  (y 250..560)
+       LEFT: Inputs box  |  CENTER: workforce_data.json  |  RIGHT: attrition note
+       ============================================================= -->
+
+  <!-- Inputs box (LEFT) -->
+  <g>
+    <rect x="120" y="290" width="320" height="80" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1.2"/>
+    <text x="280" y="318" text-anchor="middle" font-weight="700" font-size="14">Inputs</text>
+    <text x="280" y="342" text-anchor="middle" fill="#4B4B4B" font-size="12">role · target · year · budget</text>
+    <text x="280" y="362" text-anchor="middle" fill="#6B6B6B" font-size="11" font-style="italic">runtime parameters to compute_plan()</text>
+  </g>
+
+  <!-- workforce_data.json — cylinder containing real field list (CENTER-RIGHT) -->
+  <g>
+    <path d="M 555 280
+             a 165 16 0 0 1 330 0
+             v 270
+             a 165 16 0 0 1 -330 0
+             z"
+          fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+    <ellipse cx="720" cy="280" rx="165" ry="16" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+
+    <text x="720" y="312" text-anchor="middle" font-weight="700" font-size="14">workforce_data.json</text>
+    <text x="720" y="332" text-anchor="middle" fill="#4B4B4B" font-size="11" font-style="italic">produced by generate_data.py</text>
+
+    <text x="572" y="360" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">id</text>
+    <text x="572" y="378" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">name</text>
+    <text x="572" y="396" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">job_title</text>
+    <text x="572" y="414" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">department</text>
+    <text x="572" y="432" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">manager_id</text>
+    <text x="572" y="450" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">flight_risk</text>
+    <text x="572" y="468" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">retirement_eligible</text>
+    <text x="572" y="486" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">skills[]</text>
+    <text x="572" y="504" font-size="12" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace">endorsements[]</text>
+    <text x="592" y="522" font-size="11" fill="#4B4B4B" font-family="ui-monospace,Consolas,monospace">skill, proficiency,</text>
+    <text x="592" y="538" font-size="11" fill="#4B4B4B" font-family="ui-monospace,Consolas,monospace">source, date</text>
+  </g>
+
+  <!-- Attrition note (RIGHT, separate dashed) -->
+  <g>
+    <rect x="930" y="310" width="240" height="76" rx="2" fill="#FAFAF7" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="1050" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#0A0A0A">attrition model</text>
+    <text x="1050" y="358" text-anchor="middle" font-size="11" fill="#4B4B4B" font-style="italic">not native to SuccessFactors</text>
+    <text x="1050" y="378" text-anchor="middle" font-size="11" fill="#4B4B4B">(supplies flight_risk)</text>
+  </g>
+
+  <!-- Dashed SAP wrapper -> JSON: vertical line from wrapper bottom center
+       to JSON cylinder top. Stays well clear of the Inputs solid arrow on
+       the left and the engine center column. -->
+  <line x1="620" y1="220" x2="620" y2="278" stroke="#4B4B4B" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowDashed)"/>
+  <text x="630" y="252" font-size="11" fill="#4B4B4B" font-style="italic">future: replaces load_data()</text>
+
+  <!-- Dashed: attrition note -> JSON (right side, short) -->
+  <line x1="930" y1="346" x2="884" y2="382" stroke="#4B4B4B" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#arrowDashed)"/>
+
+  <!-- =============================================================
+       FLOWS INTO ENGINE — TWO INDEPENDENT INPUTS
+       Inputs (left) -> engine top at x=280
+       JSON   -> engine top at x=720
+       Each is a single solid arrow. No crossings.
+       ============================================================= -->
+
+  <!-- Inputs solid arrow: straight down from box bottom (x=280, y=370) to engine top (x=280, y=600). -->
+  <line x1="280" y1="370" x2="280" y2="600" stroke="#0A0A0A" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="290" y="490" font-size="11" fill="#4B4B4B" font-style="italic">runtime parameters</text>
+
+  <!-- JSON solid arrow: straight down from cylinder bottom (x=720, y=550) to engine top (x=720, y=600). -->
+  <line x1="720" y1="550" x2="720" y2="600" stroke="#0A0A0A" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="730" y="582" font-size="11" fill="#4B4B4B" font-style="italic">data</text>
+
+  <!-- =============================================================
+       BAND 3 — ENGINE  (y 600..780)
+       Header: engine.py · compute_plan() · produces every number
+       Steps: trust -> bucket -> gap -> cost -> recommend
+       ============================================================= -->
+  <g>
+    <rect x="80" y="600" width="1080" height="180" rx="3" fill="#ECFDF5" stroke="#15803D" stroke-width="2"/>
+    <text x="100" y="628" font-weight="700" font-size="14" fill="#0A0A0A">engine.py</text>
+    <text x="186" y="628" font-size="14" fill="#0A0A0A">·</text>
+    <text x="200" y="628" font-weight="700" fill="#0A0A0A" font-family="ui-monospace,Consolas,monospace" font-size="13">compute_plan()</text>
+    <text x="328" y="628" font-size="14" fill="#0A0A0A">·</text>
+    <text x="342" y="628" fill="#15803D" font-size="12" font-style="italic">produces every number</text>
+
+    <!-- Step boxes; container inner usable = 1080 - 60 = 1020.
+         5 boxes of 188w, gap 16: 5*188 + 4*16 = 1004; left pad (1020-1004)/2 = 8.
+         Step 1 starts at 80 + 30 + 8 = 118. -->
+    <!-- trust -->
+    <g>
+      <rect x="118" y="660" width="188" height="100" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="212" y="694" text-anchor="middle" font-weight="700" font-size="14">trust</text>
+      <text x="212" y="718" text-anchor="middle" fill="#4B4B4B" font-size="12">is_endorsement_</text>
+      <text x="212" y="736" text-anchor="middle" fill="#4B4B4B" font-size="12">trusted</text>
+    </g>
+    <!-- bucket -->
+    <g>
+      <rect x="322" y="660" width="188" height="100" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="416" y="694" text-anchor="middle" font-weight="700" font-size="14">bucket</text>
+      <text x="416" y="718" text-anchor="middle" fill="#4B4B4B" font-size="12">_classify</text>
+      <text x="416" y="736" text-anchor="middle" fill="#4B4B4B" font-size="12">3 buckets</text>
+    </g>
+    <!-- gap -->
+    <g>
+      <rect x="526" y="660" width="188" height="100" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="620" y="694" text-anchor="middle" font-weight="700" font-size="14">gap</text>
+      <text x="620" y="718" text-anchor="middle" fill="#4B4B4B" font-size="12">attrition,</text>
+      <text x="620" y="736" text-anchor="middle" fill="#4B4B4B" font-size="12">hire_gap</text>
+    </g>
+    <!-- cost -->
+    <g>
+      <rect x="730" y="660" width="188" height="100" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="824" y="694" text-anchor="middle" font-weight="700" font-size="14">cost</text>
+      <text x="824" y="718" text-anchor="middle" fill="#4B4B4B" font-size="12">plan_cost,</text>
+      <text x="824" y="736" text-anchor="middle" fill="#4B4B4B" font-size="12">savings</text>
+    </g>
+    <!-- recommend -->
+    <g>
+      <rect x="934" y="660" width="188" height="100" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="1028" y="694" text-anchor="middle" font-weight="700" font-size="14">recommend</text>
+      <text x="1028" y="718" text-anchor="middle" fill="#4B4B4B" font-size="12">natural-precedence</text>
+      <text x="1028" y="736" text-anchor="middle" fill="#4B4B4B" font-size="12">sequencing</text>
+    </g>
+
+    <!-- L-R flow arrows -->
+    <line x1="306" y1="710" x2="322" y2="710" stroke="#0A0A0A" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="510" y1="710" x2="526" y2="710" stroke="#0A0A0A" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="714" y1="710" x2="730" y2="710" stroke="#0A0A0A" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="918" y1="710" x2="934" y2="710" stroke="#0A0A0A" stroke-width="1.3" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- =============================================================
+       BAND 4 — RESULT  (y 820..900)
+       The plan dict — explicit shared artifact between engine, app, llm.
+       ============================================================= -->
+
+  <line x1="620" y1="780" x2="620" y2="820" stroke="#0A0A0A" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="460" y="820" width="320" height="76" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1.5"/>
+    <text x="620" y="848" text-anchor="middle" font-weight="700" font-size="14">plan dict</text>
+    <text x="620" y="868" text-anchor="middle" fill="#4B4B4B" font-size="12">25 fields, all numeric or list</text>
+    <text x="620" y="886" text-anchor="middle" fill="#6B6B6B" font-size="11" font-style="italic">return value of compute_plan()</text>
+  </g>
+
+  <!-- arrow plan dict -> app.py (solid) -->
+  <line x1="620" y1="896" x2="620" y2="950" stroke="#0A0A0A" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- =============================================================
+       BAND 5 — PRESENTATION  (y 950..1040)
+       app.py CENTER, llm_utils on the RIGHT (dashed branch off plan dict)
+       ============================================================= -->
+
+  <g>
+    <rect x="440" y="950" width="360" height="90" rx="2" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="1.2"/>
+    <text x="620" y="976" text-anchor="middle" font-weight="700" font-size="14">app.py</text>
+    <text x="620" y="996" text-anchor="middle" fill="#4B4B4B" font-size="12">Streamlit UI</text>
+    <text x="620" y="1016" text-anchor="middle" fill="#6B6B6B" font-size="11">renders plan dict as sections</text>
+  </g>
+
+  <g>
+    <rect x="870" y="850" width="300" height="100" rx="2" fill="#FAFAF7" stroke="#6B6B6B" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="1020" y="876" text-anchor="middle" font-weight="700" font-size="14" fill="#0A0A0A">llm_utils.py</text>
+    <text x="1020" y="896" text-anchor="middle" fill="#4B4B4B" font-size="12">prose only, never numbers</text>
+    <text x="1020" y="914" text-anchor="middle" fill="#4B4B4B" font-size="12">headline · risk · chat</text>
+    <text x="1020" y="934" text-anchor="middle" fill="#6B6B6B" font-size="11" font-style="italic">templates if no API key</text>
+  </g>
+
+  <!-- Dashed: plan dict -> llm_utils  (consumes finished values) -->
+  <line x1="780" y1="858" x2="870" y2="888" stroke="#4B4B4B" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowDashed)"/>
+  <text x="785" y="852" font-size="11" fill="#4B4B4B" font-style="italic">plan summary in</text>
+
+  <!-- Dashed: llm_utils -> app.py  (returns prose). Routed clearly above
+       the app.py box with the label well away from any other text. -->
+  <line x1="870" y1="935" x2="800" y2="980" stroke="#4B4B4B" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowDashed)"/>
+  <text x="820" y="932" font-size="11" fill="#4B4B4B" font-style="italic">prose out</text>
+
+  <!-- =============================================================
+       LEGEND  (bottom)
+       ============================================================= -->
+  <g font-size="12" fill="#4B4B4B">
+    <line x1="80" y1="1075" x2="124" y2="1075" stroke="#0A0A0A" stroke-width="1.6"/>
+    <text x="132" y="1079">solid · real data flow</text>
+
+    <line x1="310" y1="1075" x2="354" y2="1075" stroke="#4B4B4B" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <text x="362" y="1079">dashed · future source or optional LLM</text>
+
+    <rect x="640" y="1067" width="16" height="16" fill="#ECFDF5" stroke="#15803D" stroke-width="1.5"/>
+    <text x="664" y="1079">accent · engine produces every number</text>
+  </g>
+
+</svg>
