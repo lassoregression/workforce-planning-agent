@@ -6,6 +6,8 @@ One scrollable page — defaults render on load; changing role, target, year, or
 
 **Live demo:** deploy to [Streamlit Community Cloud](https://share.streamlit.io) — [instructions below](#deploy-streamlit-community-cloud). Add your app URL here once it's live.
 
+**Repo:** [github.com/lassoregression/workforce-planning-agent](https://github.com/lassoregression/workforce-planning-agent)
+
 ---
 
 ## What this is for
@@ -183,7 +185,7 @@ Concrete next steps for a production deployment — not aspirational features.
 ## Running it
 
 ```bash
-cd workforce-planner
+cd workforce-planning-agent
 pip install -r requirements.txt
 python generate_data.py            # writes workforce_data.json (deterministic)
 cp .env.example .env               # optional — enables LLM prose
