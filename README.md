@@ -4,7 +4,7 @@ A briefing tool that turns a "we need 250 of role X by year Y" target into a def
 
 One scrollable page — defaults render on load; changing role, target, year, or budget recomputes the plan in place.
 
-**Live demo:** deploy to [Streamlit Community Cloud](https://share.streamlit.io) — [instructions below](#deploy-streamlit-community-cloud). Add your app URL here once it's live.
+**[Live demo →](https://workforce-planning-agent.streamlit.app/)** · synthetic data, no API key required
 
 **Repo:** [github.com/lassoregression/workforce-planning-agent](https://github.com/lassoregression/workforce-planning-agent)
 
