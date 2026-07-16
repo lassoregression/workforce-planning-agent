@@ -406,32 +406,60 @@ def _recompute():
     st.session_state["risk_text"] = generate_risk(plan)
 
 
-def _on_budget_change():
-    """Parse the formatted text in budget_text and update the budget float.
-
-    Falls back to the prior valid budget on parse failure and surfaces
-    a small caption error.
-    """
-    raw = st.session_state.get("budget_text", "")
-    parsed = parse_budget(raw)
-    if parsed is not None and parsed >= 0:
-        st.session_state["budget"] = parsed
-        st.session_state["budget_text"] = format_budget(parsed)
-        st.session_state["budget_error"] = None
-    else:
-        st.session_state["budget_error"] = (
-            "Enter like $12M, $500K, or 12000000."
-        )
-    _recompute()
-
-
 if "plan" not in st.session_state:
-    _recompute()
     st.session_state.setdefault("chat_history", [])
     st.session_state.setdefault("lookup", employee_lookup())
     st.session_state.setdefault("budget_text", format_budget(DEFAULTS["budget"]))
     st.session_state.setdefault("budget_error", None)
 
+
+# ----- Inputs (placed early so every rerun can sync the plan) ----------------
+
+hero_slot = st.empty()
+
+bar = st.columns([2.0, 1.3, 1.3, 1.6])
+with bar[0]:
+    st.selectbox(
+        "Role",
+        list(REQUIRED_SKILLS.keys()),
+        key="role",
+    )
+with bar[1]:
+    st.number_input(
+        "Target headcount",
+        min_value=1, max_value=1000,
+        key="target",
+    )
+with bar[2]:
+    st.selectbox(
+        "By when",
+        ["2027 Q4", "2028 Q4", "2029 Q4"],
+        key="year",
+    )
+with bar[3]:
+    st.text_input(
+        "Budget",
+        key="budget_text",
+        help="Examples: $12M, $500K, 12000000",
+    )
+    if st.session_state.get("budget_error"):
+        st.caption(st.session_state["budget_error"])
+
+
+def _sync_budget_from_text():
+    raw = st.session_state.get("budget_text", "")
+    parsed = parse_budget(raw)
+    if parsed is not None and parsed >= 0:
+        st.session_state["budget"] = parsed
+        st.session_state["budget_error"] = None
+    else:
+        st.session_state["budget_error"] = (
+            "Enter like $12M, $500K, or 12000000."
+        )
+
+
+_sync_budget_from_text()
+_recompute()
 
 plan = st.session_state["plan"]
 role = plan["role"]
@@ -441,24 +469,6 @@ year = st.session_state["year"]
 
 # ----- Eyebrow + headline thesis (HERO) --------------------------------------
 
-st.markdown(
-    f"<div class='eyebrow'>Workforce plan"
-    f"<span class='sep'>/</span>{role}"
-    f"<span class='sep'>/</span>{plan['target_headcount']} by {year}</div>",
-    unsafe_allow_html=True,
-)
-
-headline = st.session_state["headline"]
-if isinstance(headline, dict):
-    thesis = headline.get("thesis", "")
-else:
-    thesis = headline
-
-st.markdown(f"<h1 class='thesis'>{thesis}</h1>", unsafe_allow_html=True)
-
-
-# Build a dynamic support sentence that adapts to the plan numbers.
-# Drop clauses that are zero so we never say "move 0".
 def _build_support(plan: dict, year: str, role: str) -> str:
     movable = len(plan["movable_confirmed"])
     develop = len(plan["one_course_away"])
@@ -476,7 +486,6 @@ def _build_support(plan: dict, year: str, role: str) -> str:
     clauses = []
     if movable > 0:
         coll = role_collective(role)
-        # Drop trailing 's' for n=1 ("engineers" -> "engineer", "admins" -> "admin").
         coll_form = coll[:-1] if movable == 1 and coll.endswith("s") else coll
         clauses.append(
             f"move {movable} confirmed {coll_form} from other teams"
@@ -508,46 +517,27 @@ def _build_support(plan: dict, year: str, role: str) -> str:
     return f"{action_sentence} {cost_sentence} {compare_sentence}"
 
 
-support_html = _build_support(plan, year, role)
-st.markdown(
-    f"<p class='thesis-support'><strong>Plan.</strong> {support_html}</p>",
-    unsafe_allow_html=True,
-)
+with hero_slot.container():
+    st.markdown(
+        f"<div class='eyebrow'>Workforce plan"
+        f"<span class='sep'>/</span>{role}"
+        f"<span class='sep'>/</span>{plan['target_headcount']} by {year}</div>",
+        unsafe_allow_html=True,
+    )
 
+    headline = st.session_state["headline"]
+    if isinstance(headline, dict):
+        thesis = headline.get("thesis", "")
+    else:
+        thesis = headline
 
-# ----- Inputs (quietly placed below the thesis) -----------------------------
+    st.markdown(f"<h1 class='thesis'>{thesis}</h1>", unsafe_allow_html=True)
 
-bar = st.columns([2.0, 1.3, 1.3, 1.6])
-with bar[0]:
-    st.selectbox(
-        "Role",
-        list(REQUIRED_SKILLS.keys()),
-        key="role",
-        on_change=_recompute,
+    support_html = _build_support(plan, year, role)
+    st.markdown(
+        f"<p class='thesis-support'><strong>Plan.</strong> {support_html}</p>",
+        unsafe_allow_html=True,
     )
-with bar[1]:
-    st.number_input(
-        "Target headcount",
-        min_value=1, max_value=1000,
-        key="target",
-        on_change=_recompute,
-    )
-with bar[2]:
-    st.selectbox(
-        "By when",
-        ["2027 Q4", "2028 Q4", "2029 Q4"],
-        key="year",
-        on_change=_recompute,
-    )
-with bar[3]:
-    st.text_input(
-        "Budget",
-        key="budget_text",
-        on_change=_on_budget_change,
-        help="Examples: $12M, $500K, 12000000",
-    )
-    if st.session_state.get("budget_error"):
-        st.caption(st.session_state["budget_error"])
 
 
 # ----- 1. SUPPLY ------------------------------------------------------------
